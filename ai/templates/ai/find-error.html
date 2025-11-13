@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #content {
+            height: 100%;
+            width: 100%;
+        }
+
+        .think {
+            background-color: #f0f8ff;
+            border-left: 5px solid #4caf50;
+            padding: 15px 20px;
+            margin: 10px 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        select {
+            text-align: center;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .messageText {
+            width: 100%;
+            font-size: 18px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            resize: none;
+            height: 35vh;
+            margin-top: 1vh;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #messages {
+            height: 94vh;
+            width: 100vw;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding: 20px 0;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+        }
+
+        #messages li {
+            font-size: 18px;
+        }
+
+        .msg-user {
+            background-color: #e6f0ff;
+            border-left: 5px solid #3399ff;
+        }
+
+        .msg-assistant {
+            background-color: #eaffea;
+            border-left: 5px solid #4caf50;
+        }
+
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            transition: background-color 0.2s ease;
+            border-radius: 5px;
+            margin: 3px;
+        }
+
+        .accordion-user {
+            background-color: #3399ff;
+            color: #fff;
+        }
+
+        .accordion-user.active, .accordion-user:hover {
+            background-color: #1976d2;
+        }
+
+        .accordion-assistant {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .accordion-assistant.active, .accordion-assistant:hover {
+            background-color: #357a38;
+        }
+
+        .panel {
+            padding: 0 10px;
+            display: none;
+            background-color: white;
+            overflow: hidden;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .panel.open {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-right: 1vw;
+            padding-left: 40px;
+            width: 30vw;
+            max-width: 94vw;
+        }
+
+        #select,
+        #selectType,
+        #selectLang,
+        #selectProgLng,
+        #selectTheme {
+            font-size: 18px;
+            max-width: 77%;
+        }
+
+        .blo {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .resize-button {
+            left: 2;
+            top: 13px;
+            position: absolute;
+            height: 98%;
+            width: 30px;
+            background-color: #d8d8d8;
+            cursor: ew-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            font-size: 32px;
+            color: black;
+        }
+
+        .check,
+        .top-preprompt {
+            margin-top: 0.5vh;
+            font-family: 'Roboto';
+            font-weight: 600;
+        }
+
+        .dv,
+        .top-dv {
+            display: flex;
+        }
+
+        .top-dv {
+            justify-content: space-between;
+            margin-top: 2vh;
+        }
+
+        .top-dv select {
+            width: 45%;
+        }
+
+        .top-preprompt {
+            font-size: 18px;
+            display: flex;
+        }
+
+        .toggle-button {
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 10px;
+            right: 0;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            height: 50px;
+            background-color: rgb(207, 205, 205);
+            border-radius: 30px 0 0 30px;
+        }
+
+        .toggle-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30px;
+            width: 30px;
+            height: 100%;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .toggle-button:hover {
+            background-color: rgb(119, 119, 119);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-content {
+            padding: 15px;
+            flex: 1;
+        }
+
+        .sidebar.open {
+            transform: translateX(-300px);
+        }
+
+        .sidebar.open+.toggle-button {
+            transform: translateX(-300px);
+        }
+
+        .toggle-button svg {
+            transition: transform 0.3s ease;
+            transform: rotate(180deg);
+        }
+
+        .sidebar.open+.toggle-button svg {
+            transform: rotate(0deg);
+        }
+
+        .top-preprompt, .check {
+            display: flex;
+        }
+
+        /* Голосовые контролы */
+        .voice-controls {
+            display: none;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .voice-controls.active {
+            display: flex;
+        }
+
+        .voice-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .voice-btn.recording {
+            background-color: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        .voice-btn.speaking {
+            background-color: #4caf50;
+        }
+
+        .voice-status {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+            min-height: 20px;
+        }
+
+        @keyframes pulse {
+            0% { background-color: #ff4444; }
+            50% { background-color: #ff6666; }
+            100% { background-color: #ff4444; }
+        }
+
+        .voice-input-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #ff4444;
+            border-radius: 50%;
+            margin-right: 5px;
+            opacity: 0;
+        }
+
+        .voice-input-indicator.active {
+            animation: voicePulse 0.8s infinite;
+        }
+
+        @keyframes voicePulse {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        .voice-mode-btn {
+            margin: 10px;
+        }
+
+        .think-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+            font-size: 14px;
+        }
+
+        .think-checkbox input {
+            margin-right: 8px;
+        }
+    </style>
+    <title>DLAPI</title>
+</head>
+
+<body>
+    <div id="content">
+        <div class="blo">
+            <ul id='messages'>
+            </ul>
+            <div class="dv">
+                <div class="resize-button" onmousedown="startResize(event)">🠔 </div>
+                <form action="" onsubmit="sendMessage(event)">
+                    <div class="top-dv">
+                        <select id="selectProgLng">
+                        </select>
+                        <select id="selectTheme">
+                        </select>
+                    </div>
+                    <div class="top-preprompt">
+                        <div class="preprompt">Препромпт:</div>
+                        <select id="selectPrompt">
+                        </select>
+                    </div>
+                    
+                    <!-- НОВАЯ кнопка голосового режима - ОТДЕЛЬНО -->
+                    <button type="button" class="voice-mode-btn" onclick="toggleVoiceControls()">
+                        🎤 Голосовой режим
+                    </button>
+                    
+                    <!-- Голосовые контролы -->
+                    <div class="voice-controls" id="voiceControls">
+                        <button type="button" class="voice-btn" id="voiceInputBtn" onclick="toggleVoiceInput()">
+                            <span class="voice-input-indicator" id="voiceIndicator"></span>
+                            🎤 Голосовой ввод
+                        </button>
+                        <button type="button" class="voice-btn" id="voiceOutputBtn" onclick="speakLastResponse()">
+                            🔊 Озвучить ответ
+                        </button>
+                        <button type="button" class="voice-btn" onclick="stopSpeech()">
+                            ⏹️ Стоп
+                        </button>
+                        
+                        <!-- Чекбокс для think-тегов -->
+                        <div class="think-checkbox">
+                            <input type="checkbox" id="speakThinkContent" checked>
+                            <label for="speakThinkContent">Озвучивать think-блоки</label>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-status" id="voiceStatus"></div>
+                    
+                    <h3 class="task">Задача:</h3>
+                    <textarea type="text" id="taskText" class="messageText" placeholder="Вставьте сюда условие задачи"
+                        autocomplete="off"></textarea>
+                    <h3 class="codetx">Код программы:</h3>
+                    <textarea type="text" id="codeText" class="messageText"
+                        placeholder="Вставьте сюда ваш код решения задачи, для красивого форматирования оберните код в ```(буква Ё на клавиатуре)"
+                        autocomplete="off"></textarea>
+                    
+                    <!-- СУЩЕСТВУЮЩИЙ блок кнопок - НЕ ТРОГАТЬ -->
+                    <div>
+                        <button type="submit">Send</button>
+                        <button type="button" onclick="clearContext()">Clear Context</button>
+                        <select id="selectLang">
+                            <option language="Russian">Русский</option>
+                            <option language="English">English</option>
+                            <option language="French">Français</option>
+                        </select>
+                        <select id="select">
+                            <option value="DeepSeek_R1_Distill_Llama_70B">DeepSeek-R1-Distill-Llama-70B</option>
+                            <option value="DeepSeek_R1">DeepSeek-R1</option>
+                            <option value="Llama_3_1_Tulu_3_405B">Llama-3.1-Tulu-3-405B</option>
+                            <option value="Meta_Llama_3_1_70B_Instruct">Meta-Llama-3-1-70B-Instruct</option>
+                            <option value="QwQ_32B">Qwen QwQ-32B</option>
+                            <option value="Mixtral_8x22b">Mixtral-8x22b</option>
+                        </select>
+                        <select id="selectType"
+                            onchange="document.location.href=this.querySelector('option:checked').dataset.link">
+                            <option data-link="/ai/chat/">Чат с DLAI</option>
+                            <option data-link="/ai/solve-problem">Реши задачу</option>
+                            <option selected>В чём ошибка?</option>
+                        </select>
+                        <div class="check">
+                            <input type="checkbox" class="inp" checked> 
+                            <div class="check-text">При нажатии на Enter будет отправлятся вопрос(для переноса строки Enter+Shift)</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <a href="/ai/admin" style="text-decoration: none; color: black;">
+                <div class="sidebar-header">
+                    Админ-Панель
+                </div>
+            </a>
+            <div class="sidebar-content">
+            </div>
+        </div>
+        
+        <a href="/ai/admin" style="text-decoration: none; color: black;">
+            <button class="toggle-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </a>
+
+        <script>
+            // Глобальные переменные
+            var ws = null;
+            var client_id = generateClientId();
+            var notEnter = false;
+            
+            // Голосовые переменные
+            var recognition = null;
+            var isListening = false;
+            var speechSynthesis = window.speechSynthesis;
+            var currentUtterance = null;
+            var speakThinkEnabled = true;
+
+            // Генерация client_id
+            function generateClientId() {
+                return 'client_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+            }
+
+            // Функции голосового управления
+            function toggleVoiceControls() {
+                const voiceControls = document.getElementById('voiceControls');
+                if (voiceControls.style.display === 'flex') {
+                    voiceControls.style.display = 'none';
+                    stopSpeech();
+                    if (isListening && recognition) {
+                        recognition.stop();
+                    }
+                } else {
+                    voiceControls.style.display = 'flex';
+                }
+            }
+
+            function initSpeechRecognition() {
+                try {
+                    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                    
+                    const langSelect = document.getElementById('selectLang');
+                    const selectedLang = langSelect.options[langSelect.selectedIndex].getAttribute('language');
+                    recognition.lang = getSpeechLanguage(selectedLang);
+                    
+                    recognition.continuous = false;
+                    recognition.interimResults = true;
+                    
+                    recognition.onstart = function() {
+                        isListening = true;
+                        updateVoiceUI();
+                        updateVoiceStatus('Слушаю... Говорите сейчас');
+                    };
+                    
+                    recognition.onresult = function(event) {
+                        let finalTranscript = '';
+                        let interimTranscript = '';
+                        
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            const transcript = event.results[i][0].transcript;
+                            if (event.results[i].isFinal) {
+                                finalTranscript += transcript;
+                            } else {
+                                interimTranscript += transcript;
+                            }
+                        }
+                        
+                        if (finalTranscript) {
+                            document.getElementById('taskText').value = finalTranscript;
+                            updateVoiceStatus('Распознано: ' + finalTranscript);
+                        } else if (interimTranscript) {
+                            updateVoiceStatus('Распознаю: ' + interimTranscript);
+                        }
+                    };
+                    
+                    recognition.onerror = function(event) {
+                        updateVoiceStatus('Ошибка: ' + event.error);
+                        isListening = false;
+                        updateVoiceUI();
+                    };
+                    
+                    recognition.onend = function() {
+                        isListening = false;
+                        updateVoiceUI();
+                        updateVoiceStatus('Готов к голосовому вводу');
+                    };
+                    
+                } catch (error) {
+                    updateVoiceStatus('Голосовой ввод не поддерживается вашим браузером');
+                }
+            }
+
+            function getSpeechLanguage(lang) {
+                const languageMap = {
+                    'Russian': 'ru-RU',
+                    'English': 'en-US',
+                    'French': 'fr-FR'
+                };
+                return languageMap[lang] || 'en-US';
+            }
+
+            function getSpeechSynthesisLanguage(lang) {
+                const languageMap = {
+                    'Russian': 'ru-RU',
+                    'English': 'en-US',
+                    'French': 'fr-FR'
+                };
+                return languageMap[lang] || 'en-US';
+            }
+
+            function toggleVoiceInput() {
+                if (!recognition) {
+                    initSpeechRecognition();
+                }
+                
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch (error) {
+                        updateVoiceStatus('Ошибка запуска распознавания');
+                    }
+                }
+            }
+
+            function speakLastResponse() {
+                const messages = document.getElementById('messages');
+                const assistantMessages = messages.querySelectorAll('.msg-assistant');
+                
+                if (assistantMessages.length === 0) {
+                    updateVoiceStatus('Нет ответов для озвучивания');
+                    return;
+                }
+                
+                const lastAssistantMessage = assistantMessages[assistantMessages.length - 1];
+                const panel = lastAssistantMessage.querySelector('.panel');
+                let text = '';
+                
+                if (panel) {
+                    text = panel.innerText || panel.textContent || '';
+                } else {
+                    text = lastAssistantMessage.innerText || lastAssistantMessage.textContent || '';
+                }
+                
+                if (!text.trim()) {
+                    updateVoiceStatus('Текст для озвучивания пуст');
+                    return;
+                }
+                
+                speakText(text);
+            }
+
+            function speakText(text) {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+                
+                const cleanText = cleanSpeechText(text);
+                
+                if (!cleanText.trim()) {
+                    updateVoiceStatus('Нет текста для озвучивания');
+                    return;
+                }
+                
+                const langSelect = document.getElementById('selectLang');
+                const selectedLang = langSelect.options[langSelect.selectedIndex].getAttribute('language');
+                
+                currentUtterance = new SpeechSynthesisUtterance(cleanText);
+                currentUtterance.lang = getSpeechSynthesisLanguage(selectedLang);
+                currentUtterance.rate = 0.9;
+                currentUtterance.pitch = 1;
+                
+                currentUtterance.onstart = function() {
+                    updateVoiceStatus('Озвучиваю...');
+                    document.getElementById('voiceOutputBtn').classList.add('speaking');
+                };
+                
+                currentUtterance.onend = function() {
+                    updateVoiceStatus('Озвучивание завершено');
+                    document.getElementById('voiceOutputBtn').classList.remove('speaking');
+                };
+                
+                currentUtterance.onerror = function(event) {
+                    updateVoiceStatus('Ошибка озвучивания');
+                    document.getElementById('voiceOutputBtn').classList.remove('speaking');
+                };
+                
+                speechSynthesis.speak(currentUtterance);
+            }
+
+            function cleanSpeechText(text) {
+                if (!text) return '';
+                
+                let cleanText = text;
+                
+                // Убираем think-блоки только если пользователь этого не хочет
+                if (!speakThinkEnabled) {
+                    cleanText = cleanText.replace(/<think>[\s\S]*?<\/think>/g, '');
+                }
+                
+                cleanText = cleanText.replace(/Показать:.*?(Скрыть:|$)/g, '');
+                cleanText = cleanText.replace(/Скрыть:.*?(Показать:|$)/g, '');
+                
+                cleanText = cleanText.replace(/<[^>]*>/g, '');
+                
+                const servicePatterns = [
+                    /\b(?:Ассистент|Assistant|Vous|Вы|User|Пользователь)\s*:\s*/gi,
+                    /\b(?:Скрыть|Показать|Hide|Show)\s*:\s*/gi,
+                    /\bЗапрос успешно обработан\b/gi,
+                    /\bОбрабатываю запрос пользователя\b/gi,
+                    /\bProcessing user request\b/gi,
+                    /\bRequest processed successfully\b/gi,
+                    /\bКонтекст очищен\b/gi,
+                    /\bContext cleared\b/gi,
+                    /\bСоединение установлено\b/gi,
+                    /\bConnection established\b/gi,
+                    /\bГотов к работе\b/gi,
+                    /\bReady to work\b/gi,
+                    /\bСообщение отправлено\b/gi,
+                    /\bMessage sent\b/gi,
+                    /\bПоказать:.*$/gm,
+                    /\bСкрыть:.*$/gm
+                ];
+                
+                servicePatterns.forEach(pattern => {
+                    cleanText = cleanText.replace(pattern, '');
+                });
+                
+                cleanText = cleanText.replace(/\s+/g, ' ').trim();
+                
+                return cleanText;
+            }
+
+            function stopSpeech() {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                    updateVoiceStatus('Озвучивание остановлено');
+                }
+                if (isListening && recognition) {
+                    recognition.stop();
+                }
+                document.getElementById('voiceOutputBtn').classList.remove('speaking');
+            }
+
+            function updateVoiceUI() {
+                const voiceBtn = document.getElementById('voiceInputBtn');
+                const voiceIndicator = document.getElementById('voiceIndicator');
+                
+                if (isListening) {
+                    voiceBtn.classList.add('recording');
+                    voiceIndicator.classList.add('active');
+                } else {
+                    voiceBtn.classList.remove('recording');
+                    voiceIndicator.classList.remove('active');
+                }
+            }
+
+            function updateVoiceStatus(message) {
+                document.getElementById('voiceStatus').textContent = message;
+            }
+
+            // Инициализация WebSocket
+            function initWebSocket() {
+                try {
+                    var wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                    var wsUrl = `${wsProtocol}//${window.location.host}/ai/chat/ws/${client_id}`;
+                    
+                    console.log('Connecting to WebSocket:', wsUrl);
+                    ws = new WebSocket(wsUrl);
+
+                    ws.onopen = function(event) {
+                        console.log('WebSocket connection established');
+                        updateVoiceStatus('Соединение установлено. Готов к работе.');
+                    };
+
+                    ws.onmessage = function (event) {
+                        var messages = document.getElementById('messages');
+                        var message = document.createElement('li');
+                        var inThinkTag = document.createElement('div');
+                        inThinkTag.classList.add('think');
+                        inThinkTag.innerHTML = parseThinkTag(event.data).thinkContent;
+                        var mainMess = document.createElement('div');
+                        mainMess.innerHTML = parseThinkTag(event.data).remainingText;
+                        const mainMessText = mainMess.innerText || "";
+                        const parsedHTML = convertMarkdownToHTML(mainMessText);
+                        const messageContent = document.createElement('div');
+                        messageContent.innerHTML = parsedHTML;
+                        
+                        // Accordion logic
+                        const allMessages = messages.querySelectorAll(':scope > li');
+                        const roles = [];
+                        for (let i = 0; i < allMessages.length; i++) {
+                            if (i % 2 === 0) roles.push('user');
+                            else roles.push('assistant');
+                        }
+                        
+                        allMessages.forEach(function (li, idx) {
+                            if (!li.classList.contains('accordion-li') && !li.querySelector('.accordion')) {
+                                li.classList.add('accordion-li');
+                                const role = roles[idx] || 'other';
+                                li.classList.remove('msg-user', 'msg-assistant');
+                                if (role === 'user') li.classList.add('msg-user');
+                                if (role === 'assistant') li.classList.add('msg-assistant');
+                                
+                                const btn = document.createElement('button');
+                                btn.className = 'accordion';
+                                if (role === 'user') btn.classList.add('accordion-user');
+                                if (role === 'assistant') btn.classList.add('accordion-assistant');
+                                
+                                const selectLang = document.getElementById('selectLang');
+                                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+                                const roleLabels = {
+                                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+                                };
+                                
+                                function getRoleLabel(role, lang) {
+                                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                                }
+                                
+                                btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                                const panel = document.createElement('div');
+                                panel.className = 'panel';
+                                
+                                while (li.firstChild) {
+                                    panel.appendChild(li.firstChild);
+                                }
+                                li.appendChild(btn);
+                                li.appendChild(panel);
+                                
+                                btn.addEventListener('click', function () {
+                                    panel.classList.toggle('open');
+                                    btn.classList.toggle('active');
+                                    btn.textContent = panel.classList.contains('open')
+                                        ? `Скрыть: ${getRoleLabel(role, langAttr)}`
+                                        : `Показать: ${getRoleLabel(role, langAttr)}`;
+                                });
+                            }
+                        });
+                        
+                        if (parseThinkTag(event.data).thinkContent) {
+                            message.appendChild(inThinkTag);
+                        }
+                        message.appendChild(messageContent);
+                        messages.appendChild(message);
+                        messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+                        notEnter = false;
+                        
+                        initAccordionForMessages();
+                        collapseAllExceptLast();
+                    };
+
+                    ws.onerror = function(error) {
+                        console.error('WebSocket error:', error);
+                        updateVoiceStatus('Ошибка соединения');
+                    };
+
+                    ws.onclose = function(event) {
+                        console.log('WebSocket connection closed');
+                        updateVoiceStatus('Соединение закрыто');
+                    };
+
+                } catch (error) {
+                    console.error('Error initializing WebSocket:', error);
+                }
+            }
+
+            function parseThinkTag(inputText) {
+                const thinkStartTag = '<think>';
+                const thinkEndTag = '</think>';
+                const startIdx = inputText.indexOf(thinkStartTag);
+                const endIdx = inputText.indexOf(thinkEndTag);
+                if (startIdx === -1 || endIdx === -1) {
+                    return {
+                        thinkContent: '',
+                        remainingText: inputText
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .trim()
+                    };
+                }
+                const thinkContent = inputText.substring(
+                    startIdx + thinkStartTag.length,
+                    endIdx
+                );
+                let remainingText =
+                    inputText.substring(0, startIdx) +
+                    inputText.substring(endIdx + thinkEndTag.length);
+                remainingText = remainingText
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .trim();
+
+                return {
+                    thinkContent: thinkContent.trim(),
+                    remainingText: remainingText
+                };
+            }
+
+            function convertMarkdownToHTML(markdown) {
+                markdown = markdown.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+                let codeBlocks = [];
+                markdown = markdown.replace(/```([^\`]*)```/g, (match, code) => {
+                    const codeId = `%%CODEBLOCK${codeBlocks.length}%%`;
+                    codeBlocks.push(code);
+                    return codeId;
+                });
+                let inlineCodeBlocks = [];
+                markdown = markdown.replace(/`([^`]+)`/g, (match, code) => {
+                    const codeId = `%%INLINECODE${inlineCodeBlocks.length}%%`;
+                    inlineCodeBlocks.push(code);
+                    return codeId;
+                });
+                markdown = markdown.replace(/^(#{1,6})\s*(.+)$/gm, (match, hashes, content) => {
+                    const level = hashes.length;
+                    return `<h${level}>${content}</h${level}>`;
+                });
+                markdown = markdown.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+                markdown = markdown.replace(/\_\_([^\_]+)\_\_/g, '<strong>$1</strong>');
+                markdown = markdown.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+                markdown = markdown.replace(/\_([^\_]+)\_/g, '<em>$1</em>');
+                markdown = markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                markdown = markdown.replace(/^\s*\*\s*(.+)$/gm, '<ul><li>$1</li></ul>');
+                markdown = markdown.replace(/^\s*\d+\.\s*(.+)$/gm, '<ol><li>$1</li></ol>');
+                markdown = markdown.replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+                markdown = markdown.replace(/\n/g, '<br />');
+                markdown = markdown.replace(/%%CODEBLOCK(\d+)%%/g, (match, index) => {
+                    return `<pre><code>${codeBlocks[index]}</code></pre>`;
+                });
+                markdown = markdown.replace(/%%INLINECODE(\d+)%%/g, (match, index) => {
+                    return `<code>${inlineCodeBlocks[index]}</code>`;
+                });
+                return markdown;
+            }
+
+            function sendMessage(event) {
+                event.preventDefault();
+                if (!ws) {
+                    console.log("WebSocket is not initialized");
+                    alert("Соединение не установлено. Пожалуйста, подождите...");
+                    return;
+                }
+                
+                if (ws.readyState !== WebSocket.OPEN) {
+                    console.log("WebSocket is not open. State:", ws.readyState);
+                    alert("Соединение не установлено. Пожалуйста, подождите...");
+                    return;
+                }
+                
+                var value = document.querySelector("#select").value;
+                var language = document.querySelector("#selectLang").value;
+                var taskInput = document.getElementById("taskText");
+                var codeInput = document.getElementById("codeText");
+                var progLng = document.querySelector("#selectProgLng").value;
+                var preprompt = document.querySelector("#selectPrompt").value;
+                
+                if (!taskInput.value.trim() && !codeInput.value.trim()) {
+                    alert("Пожалуйста, введите условие задачи или код программы");
+                    return;
+                }
+                
+                ws.send(JSON.stringify({
+                    type: '3',
+                    message: taskInput.value,
+                    value: value,
+                    language: language,
+                    progLng: progLng,
+                    code: codeInput.value,
+                    preprompt: preprompt
+                }));
+                
+                taskInput.value = '';
+                codeInput.value = '';
+            }
+
+            // ОРИГИНАЛЬНАЯ функция clearContext - НЕ ТРОГАТЬ
+            function clearContext() {
+                if (!ws) {
+                    console.log("WebSocket is not initialized");
+                    return;
+                }
+                
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ action: 'clear_context' }));
+                    
+                    // Также очищаем локально сообщения
+                    var messages = document.getElementById('messages');
+                    messages.innerHTML = '';
+                    
+                    // Показываем сообщение об очистке
+                    var clearMessage = document.createElement('li');
+                    clearMessage.innerHTML = '<div style="color: green;">Контекст очищен</div>';
+                    messages.appendChild(clearMessage);
+                    messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+                    
+                } else {
+                    console.log("WebSocket is not open. State:", ws.readyState);
+                    alert("Соединение не установлено");
+                }
+            }
+
+            // Обработка клавиши Enter
+            document.addEventListener("keydown", function (event) {
+                const checkbox = document.querySelector(".inp");
+                if (event.key === "Enter" && checkbox.checked && !event.shiftKey && !notEnter) {
+                    notEnter = true;
+                    sendMessage(event);
+                }
+            });
+
+            const toggleButton = document.querySelector('.toggle-button');
+            const sidebar = document.querySelector('.sidebar');
+
+            toggleButton.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+
+            let isResizing = false;
+
+            function startResize(event) {
+                isResizing = true;
+                window.addEventListener('mousemove', resize);
+                window.addEventListener('mouseup', stopResize);
+            }
+
+            function resize(event) {
+                if (isResizing) {
+                    const container = document.querySelector('form');
+                    const newWidth = container.getBoundingClientRect().right - event.clientX;
+                    const minWidth = 400;
+                    if (newWidth > minWidth) {
+                        container.style.width = `${newWidth}px`;
+                    }
+                }
+            }
+
+            function stopResize() {
+                isResizing = false;
+                window.removeEventListener('mousemove', resize);
+                window.removeEventListener('mouseup', stopResize);
+            }
+
+            const localization = {
+                Russian: {
+                    send: "Отправить",
+                    clear: "Очистить контекст",
+                    placeholder: "Введите сюда ваш код решения задачи, для красивого форматирования оберните код в ```(буква Ё на клавиатуре)\nПример форматирования кода:\n```\nprint('Hello, world!')\n```",
+                    taskplace: "Вставьте сюда условие задачи",
+                    adminPanel: "Админ-Панель",
+                    chat: "Чат с DLAI",
+                    decideTask: "Реши задачу",
+                    findError: "В чём ошибка?",
+                    enterHint: "При нажатии на Enter будет отправляться вопрос (для переноса строки Enter+Shift)",
+                    preprompt: "Препромпт",
+                    task: "Задача",
+                    codetx: "Код программы",
+                    chooseLanguage: "Выберите язык",
+                    chooseTheme: "Выберите тему",
+                    choosePrompt: "Выберите промпт"
+                },
+                English: {
+                    send: "Send",
+                    clear: "Clear Context",
+                    placeholder: "Enter your code for solving the problem here, for beautiful formatting wrap the code in ```\nExample of code formatting:\n```\nprint('Hello, world!')\n```",
+                    taskplace: "Paste the task description here",
+                    adminPanel: "Admin Panel",
+                    chat: "Chat with DLAI",
+                    decideTask: "Solve the task",
+                    findError: "What's the error?",
+                    enterHint: "Press Enter to send the question (Shift+Enter for a new line)",
+                    preprompt: "Preprompt",
+                    task: "Task",
+                    codetx: "Program code",
+                    chooseLanguage: "Choose language",
+                    chooseTheme: "Choose theme",
+                    choosePrompt: "Choose prompt"
+                },
+                French: {
+                    send: "Envoyer",
+                    clear: "Effacer le contexte",
+                    placeholder: "Entrez votre code pour résoudre le problème ici, pour un beau formatage, enveloppez le code dans ```\nExemple de formatage de code :\n```\nprint('Hello, world!')\n```",
+                    taskplace: "Collez la description de la tâche ici",
+                    adminPanel: "Panneau Admin",
+                    chat: "Chat avec DLAI",
+                    decideTask: "Résoudre la tâche",
+                    findError: "Quelle est l'erreur?",
+                    enterHint: "Appuyez sur Entrée pour envoyer la question (Shift+Enter pour une nouvelle ligne)",
+                    preprompt: "Pré-promp",
+                    task: "Tâche",
+                    codetx: "Code du programme",
+                    chooseLanguage: "Choisir la langue",
+                    chooseTheme: "Choisir le thème",
+                    choosePrompt: "Choisir le prompt"
+                }
+            };
+
+            document.getElementById("selectLang").addEventListener("change", function () {
+                const selectedLang = this.options[this.selectedIndex].getAttribute("language");
+                document.querySelector("button[type='submit']").textContent = localization[selectedLang].send;
+                document.querySelector("button[onclick='clearContext()']").textContent = localization[selectedLang].clear;
+                document.getElementById("codeText").setAttribute("placeholder", localization[selectedLang].placeholder);
+                document.getElementById("taskText").setAttribute("placeholder", localization[selectedLang].taskplace);
+                document.querySelector(".sidebar-header").textContent = localization[selectedLang].adminPanel;
+                document.querySelector("#selectType option:nth-child(1)").textContent = localization[selectedLang].chat;
+                document.querySelector("#selectType option:nth-child(2)").textContent = localization[selectedLang].decideTask;
+                document.querySelector("#selectType option:nth-child(3)").textContent = localization[selectedLang].findError;
+                document.querySelector(".check-text").textContent = localization[selectedLang].enterHint;
+                document.querySelector(".preprompt").textContent = localization[selectedLang].preprompt;
+                document.querySelector(".task").textContent = localization[selectedLang].task;
+                document.querySelector(".codetx").textContent = localization[selectedLang].codetx;
+                updateAccordionLabels();
+            });
+
+            function initAccordionForMessages() {
+                const messages = document.getElementById('messages');
+                const allMessages = messages.querySelectorAll(':scope > li');
+                const roles = [];
+                for (let i = 0; i < allMessages.length; i++) {
+                    if (i % 2 === 0) roles.push('user');
+                    else roles.push('assistant');
+                }
+                
+                const selectLang = document.getElementById('selectLang');
+                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+                const roleLabels = {
+                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+                };
+                
+                function getRoleLabel(role, lang) {
+                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                }
+                
+                allMessages.forEach(function (li, idx) {
+                    if (!li.classList.contains('accordion-li')) {
+                        li.classList.add('accordion-li');
+                        const role = roles[idx] || 'other';
+                        li.classList.remove('msg-user', 'msg-assistant');
+                        
+                        const btn = document.createElement('button');
+                        if (role === 'user') li.classList.add('msg-user');
+                        if (role === 'assistant') li.classList.add('msg-assistant');
+                        btn.className = 'accordion';
+                        if (role === 'user') btn.classList.add('accordion-user');
+                        if (role === 'assistant') btn.classList.add('accordion-assistant');
+                        btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                        
+                        const panel = document.createElement('div');
+                        panel.className = 'panel';
+                        
+                        while (li.firstChild) {
+                            panel.appendChild(li.firstChild);
+                        }
+                        li.appendChild(btn);
+                        li.appendChild(panel);
+                        
+                        btn.addEventListener('click', function () {
+                            panel.classList.toggle('open');
+                            btn.classList.toggle('active');
+                            btn.textContent = panel.classList.contains('open')
+                                ? `Скрыть: ${getRoleLabel(role, langAttr)}`
+                                : `Показать: ${getRoleLabel(role, langAttr)}`;
+                        });
+                    }
+                });
+                
+                if (allMessages.length > 0) {
+                    const lastLi = allMessages[allMessages.length - 1];
+                    const lastBtn = lastLi.querySelector('.accordion');
+                    const lastPanel = lastLi.querySelector('.panel');
+                    if (lastBtn && lastPanel) {
+                        lastPanel.classList.add('open');
+                        lastBtn.classList.add('active');
+                        const lastRole = roles[allMessages.length - 1] || 'other';
+                        lastBtn.textContent = `Скрыть: ${getRoleLabel(lastRole, langAttr)}`;
+                    }
+                }
+                
+                window._accordionRoles = roles;
+            }
+
+            function updateAccordionLabels() {
+                const selectLang = document.getElementById('selectLang');
+                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+                const roleLabels = {
+                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+                };
+                
+                function getRoleLabel(role, lang) {
+                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                }
+                
+                const allMessages = document.getElementById('messages').querySelectorAll('li');
+                const roles = window._accordionRoles || [];
+                allMessages.forEach(function (li, idx) {
+                    const btn = li.querySelector('.accordion');
+                    const panel = li.querySelector('.panel');
+                    if (btn && panel) {
+                        const role = roles[idx] || 'other';
+                        btn.textContent = panel.classList.contains('open')
+                            ? `Скрыть: ${getRoleLabel(role, langAttr)}`
+                            : `Показать: ${getRoleLabel(role, langAttr)}`;
+                    }
+                });
+            }
+
+            function collapseAllExceptLast() {
+                const allMessages = document.getElementById('messages').querySelectorAll('li');
+                const selectLang = document.getElementById('selectLang');
+                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+                const roleLabels = {
+                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+                };
+                
+                const roles = window._accordionRoles || [];
+                function getRoleLabel(role, lang) {
+                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                }
+                
+                allMessages.forEach((li, idx) => {
+                    const btn = li.querySelector('.accordion');
+                    const panel = li.querySelector('.panel');
+                    const role = roles[idx] || 'other';
+                    if (btn && panel) {
+                        if (idx === allMessages.length - 1) {
+                            panel.classList.add('open');
+                            btn.classList.add('active');
+                            btn.textContent = `Скрыть: ${getRoleLabel(role, langAttr)}`;
+                        } else {
+                            panel.classList.remove('open');
+                            btn.classList.remove('active');
+                            btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                        }
+                    }
+                });
+            }
+
+            // Загрузка языков, тем и промптов
+            document.addEventListener("DOMContentLoaded", async () => {
+                const languageSelect = document.getElementById("selectProgLng");
+                const topicSelect = document.getElementById("selectTheme");
+                const promptSelect = document.getElementById("selectPrompt");
+
+                async function fetchData(url) {
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const data = await response.json();
+                        console.log('Fetched data:', data);
+                        return data;
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                        return [];
+                    }
+                }
+
+                // Функция для выбора первого варианта, если он единственный
+                function selectFirstIfSingle(selectElement) {
+                    if (selectElement && selectElement.options.length === 1) {
+                        selectElement.selectedIndex = 0;
+                    }
+                }
+
+                async function loadLanguages() {
+                    const languages = await fetchData("/ai/api/languages");
+                    languageSelect.innerHTML = '<option value="">Выберите язык</option>';
+                    if (languages && languages.length > 0) {
+                        languages.forEach(lang => {
+                            const option = new Option(lang.language_name, lang.id);
+                            languageSelect.appendChild(option);
+                        });
+                    }
+                    selectFirstIfSingle(languageSelect);
+                }
+
+                async function loadTopics(languageId) {
+                    const topics = await fetchData("/ai/api/topics");
+                    topicSelect.innerHTML = '<option value="">Выберите тему</option>';
+                    if (topics && topics.length > 0) {
+                        const filteredTopics = topics.filter(topic => topic.programming_language == languageId);
+                        filteredTopics.forEach(topic => {
+                            const option = new Option(topic.topic_name, topic.id);
+                            topicSelect.appendChild(option);
+                        });
+                    }
+                    selectFirstIfSingle(topicSelect);
+                }
+
+                async function loadPrompts(topicId) {
+                    const prompts = await fetchData("/ai/api/prompts");
+                    promptSelect.innerHTML = '<option value="">Выберите промпт</option>';
+                    if (prompts && prompts.length > 0) {
+                        const filteredPrompts = prompts.filter(prompt => prompt.topic_id == topicId);
+                        filteredPrompts.forEach(prompt => {
+                            const option = new Option(prompt.prompt_name, prompt.id);
+                            promptSelect.appendChild(option);
+                        });
+                    }
+                    selectFirstIfSingle(promptSelect);
+                }
+
+                languageSelect.addEventListener("change", async () => {
+                    const languageId = parseInt(languageSelect.value);
+                    topicSelect.innerHTML = '<option value="">Выберите тему</option>';
+                    promptSelect.innerHTML = '<option value="">Выберите промпт</option>';
+                    if (!isNaN(languageId)) {
+                        await loadTopics(languageId);
+                    }
+                });
+
+                topicSelect.addEventListener("change", async () => {
+                    const topicId = parseInt(topicSelect.value);
+                    promptSelect.innerHTML = '<option value="">Выберите промпт</option>';
+                    if (!isNaN(topicId)) {
+                        await loadPrompts(topicId);
+                    }
+                });
+
+                await loadLanguages();
+            });
+
+            window.onload = function () {
+                console.log('Initializing WebSocket with client_id:', client_id);
+                initWebSocket();
+                initSpeechRecognition();
+                document.getElementById("selectLang").dispatchEvent(new Event("change"));
+                initAccordionForMessages();
+                updateVoiceStatus('Готов к работе. Нажмите "Голосовой режим" для активации голосовых функций.');
+                
+                // Инициализация чекбокса think-блоков
+                const speakThinkCheckbox = document.getElementById('speakThinkContent');
+                speakThinkCheckbox.addEventListener('change', function() {
+                    speakThinkEnabled = this.checked;
+                });
+            };
+        </script>
+    </div>
+</body>
+</html>
