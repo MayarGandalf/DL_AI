@@ -59,14 +59,17 @@
             border-radius: 10px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             resize: none;
-            height: 85vh;
+            height: 50vh;
             margin-top: 2vh;
+            margin-bottom: 0;
+            grid-column: 1 / -1;
+            grid-row: 1;
         }
 
         button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
+            padding: 6px 12px;
+            margin: 3px;
+            font-size: 14px;
             color: white;
             background-color: #007BFF;
             border: none;
@@ -74,6 +77,10 @@
             cursor: pointer;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
+        }
+
+        .voice-btn {
+            margin: 3px;
         }
 
         button:hover {
@@ -155,12 +162,16 @@
         }
 
         form {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 430px 2px 50px;
             margin-right: 1vw;
             padding-left: 40px;
             width: 30vw;
             max-width: 94vw;
+            height: 100vh;
+            gap: 0px;
+            align-content: start;
         }
 
         #select,
@@ -276,6 +287,272 @@
         .sidebar.open+.toggle-button svg {
             transform: rotate(0deg);
         }
+
+        .voice-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 0;
+            margin-top: -23px;
+            flex-wrap: wrap;
+            grid-column: 1;
+            grid-row: 4;
+            align-self: start;
+        }
+
+        .voice-controls.active {
+            display: flex;
+        }
+
+        .voice-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .voice-btn.recording {
+            background-color: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+
+        .voice-btn.speaking {
+            background-color: #4caf50;
+        }
+
+        .voice-status {
+            font-size: 14px;
+            color: #666;
+            margin: 2px 0;
+            min-height: 0;
+            grid-column: 1 / -1;
+            grid-row: 1;
+            align-self: end;
+        }
+
+        @keyframes pulse {
+            0% { background-color: #ff4444; }
+            50% { background-color: #ff6666; }
+            100% { background-color: #ff4444; }
+        }
+
+        .voice-input-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #ff4444;
+            border-radius: 50%;
+            margin-right: 5px;
+            opacity: 0;
+        }
+
+        .voice-input-indicator.active {
+            animation: voicePulse 0.8s infinite;
+        }
+
+        @keyframes voicePulse {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        .voice-mode-btn {
+            margin: 10px;
+            display: none;
+        }
+
+        .think-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+            font-size: 14px;
+        }
+
+        .think-checkbox input {
+            margin-right: 8px;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+            grid-column: 1;
+            grid-row: 3;
+            justify-self: start;
+            align-self: start;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+
+        /* При масштабе меньше 150% */
+        @media (max-resolution: 159dpi) {
+            .buttons-container {
+                grid-row: 3;
+                align-self: start;
+                margin-top: -23px;
+            }
+        }
+
+        /* При масштабе 150% и выше */
+        @media (min-resolution: 160dpi) {
+            .buttons-container {
+                grid-row: 4;
+                align-self: start;
+                margin-top: -23px;
+            }
+        }
+
+        .buttons-container button {
+            margin: 0;
+        }
+
+        .selectors-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top:-23px;
+            grid-column: 2;
+            grid-row: 4;
+            align-self: start;
+        }
+
+        .selectors-container select {
+            width: 100%;
+        }
+
+        /* Responsive для видимости элементов */
+        @media (max-width: 1400px) {
+            .dv {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            form {
+                width: 100% !important;
+                padding-left: 10px;
+            }
+            
+            .resize-button {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .blo {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            
+            form {
+                width: 100%;
+                padding-left: 10px;
+            }
+            
+            .resize-button {
+                display: none;
+            }
+            
+            #messages {
+                width: calc(100% - 20px);
+                margin: 10px;
+                height: 40vh;
+                max-height: 40vh;
+            }
+            
+            #messageText {
+                height: 20vh;
+                max-height: 25vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #messages {
+                height: 35vh;
+                max-height: 35vh;
+            }
+            
+            #messageText {
+                height: 15vh;
+                max-height: 20vh;
+                font-size: 16px;
+            }
+            
+            button, #select, #selectType, #selectLang {
+                font-size: 14px;
+            }
+        }
+
+        /* При масштабе 150% и выше - дополнительные стили */
+        @media (min-resolution: 160dpi) {
+            form {
+                grid-template-columns: 300px 1fr 1fr;
+                grid-template-rows: 60px 0px 50px 10px;
+            }
+
+            #messageText {
+                height: 60px;
+                margin-bottom: 0;
+            }
+
+            button {
+                padding: 4px 8px;
+                margin: 2px;
+                font-size: 12px;
+            }
+
+            .buttons-container button {
+                flex: 1 1 auto;
+                min-width: 80px;
+            }
+            .voice-status {
+                grid-row: 1;
+                align-self: end;
+                margin-top: -23px;
+            }
+            .voice-controls {
+                grid-column: 2;
+                grid-row: 4;
+            }
+
+            .voice-btn {
+                font-size: 11px;
+                white-space: nowrap;
+                flex: 1 1 100%;
+                padding: 4px 8px;
+            }
+
+            .selectors-container {
+                grid-column: 3;
+                grid-row: 4;
+            }
+
+            .selectors-container select {
+                font-size: 12px;
+                padding: 4px;
+            }
+
+            .think-checkbox {
+                font-size: 11px;
+                white-space: nowrap;
+                margin: 2px;
+            }
+
+            .think-checkbox input {
+                margin-right: 4px;
+            }
+
+            #messageText {
+                margin-bottom: 1px;
+            }
+
+            #select,
+            #selectType,
+            #selectLang {
+                font-size: 12px;
+                padding: 4px;
+            }
+        }
     </style>
 
     <title>DLAPI</title>
@@ -293,9 +570,40 @@
                     <textarea type="text" id="messageText"
                         placeholder="Задайте вопрос (желательно на английском во избежание ошибок), для красивого форматирования оберните код в ```(буква Ё на клавиатуре)"
                         autocomplete="off"></textarea>
-                    <div>
+                    
+                    <!-- Кнопка голосового режима -->
+                    <button type="button" class="voice-mode-btn" onclick="toggleVoiceControls()">
+                        🎤 Голосовой режим
+                    </button>
+                    
+                    <!-- Голосовые контролы (скрыты по умолчанию) -->
+                    <div class="voice-controls" id="voiceControls">
+                        <button type="button" class="voice-btn" id="voiceInputBtn" onclick="toggleVoiceInput()">
+                            <span class="voice-input-indicator" id="voiceIndicator"></span>
+                            🎤 Голосовой ввод
+                        </button>
+                        <button type="button" class="voice-btn" id="voiceOutputBtn" onclick="speakLastResponse()">
+                            🔊 Озвучить ответ
+                        </button>
+                        <button type="button" class="voice-btn" onclick="stopSpeech()">
+                            ⏹️ Стоп
+                        </button>
+                        
+                        <!-- Чекбокс для think-тегов -->
+                        <div class="think-checkbox">
+                            <input type="checkbox" id="speakThinkContent" checked>
+                            <label for="speakThinkContent">Озвучивать think-блоки</label>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-status" id="voiceStatus"></div>
+                    
+                    <div class="buttons-container">
                         <button type="submit">Send</button>
                         <button type="button" onclick="clearContext()">Clear Context</button>
+                    </div>
+                    
+                    <div class="selectors-container">
                         <select id="selectLang">
                             <option language="Russian">Русский</option>
                             <option language="English">English</option>
@@ -333,487 +641,603 @@
             <div class="sidebar-content">
             </div>
         </div>
-        
-        <a href="/ai/admin" style="text-decoration: none; color: black;">
-            <button class="toggle-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
-        </a>
-        <script>
-            // Глобальные переменные
-            var ws = null;
-            var client_id = generateClientId();
-            var notEnter = false;
 
-            // Генерация client_id если не передан из бэкенда
-            function generateClientId() {
-                return 'client_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        <button class="toggle-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const client_id = '{{ client_id }}';
+        let ws;
+        let isListening = false;
+        let notEnter = false;
+        let speakEnabled = true;
+        let speakThinkEnabled = true;
+
+        let recognition;
+        function initSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.warn('Speech Recognition API not supported');
+                return;
             }
 
-            // Заглушка для отсутствующей функции
-            function fetchCanUseAi(dlsid) {
-                console.log('fetchCanUseAi called with dlsid:', dlsid);
-                return Promise.resolve(null); // Возвращаем промис с null
-            }
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.language = 'en-US';
 
-            function parseThinkTag(inputText) {
-                const thinkStartTag = '<think>';
-                const thinkEndTag = '</think>';
-                const startIdx = inputText.indexOf(thinkStartTag);
-                const endIdx = inputText.indexOf(thinkEndTag);
-                if (startIdx === -1 || endIdx === -1) {
-                    return {
-                        thinkContent: '',
-                        remainingText: inputText
-                            .replace(/</g, '&lt;')
-                            .replace(/>/g, '&gt;')
-                            .trim()
-                    };
-                }
-                const thinkContent = inputText.substring(
-                    startIdx + thinkStartTag.length,
-                    endIdx
-                );
-                let remainingText =
-                    inputText.substring(0, startIdx) +
-                    inputText.substring(endIdx + thinkEndTag.length);
-                remainingText = remainingText
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .trim();
+            recognition.onstart = function () {
+                isListening = true;
+                updateVoiceUI();
+            };
 
-                return {
-                    thinkContent: thinkContent.trim(),
-                    remainingText: remainingText
-                };
-            }
-
-            function convertMarkdownToHTML(markdown) {
-                markdown = markdown.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-                let codeBlocks = [];
-                markdown = markdown.replace(/```([^\`]*)```/g, (match, code) => {
-                    const codeId = `%%CODEBLOCK${codeBlocks.length}%%`;
-                    codeBlocks.push(code);
-                    return codeId;
-                });
-                let inlineCodeBlocks = [];
-                markdown = markdown.replace(/`([^`]+)`/g, (match, code) => {
-                    const codeId = `%%INLINECODE${inlineCodeBlocks.length}%%`;
-                    inlineCodeBlocks.push(code);
-                    return codeId;
-                });
-                markdown = markdown.replace(/^(#{1,6})\s*(.+)$/gm, (match, hashes, content) => {
-                    const level = hashes.length;
-                    return `<h${level}>${content}</h${level}>`;
-                });
-                markdown = markdown.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
-                markdown = markdown.replace(/\_\_([^\_]+)\_\_/g, '<strong>$1</strong>');
-                markdown = markdown.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
-                markdown = markdown.replace(/\_([^\_]+)\_/g, '<em>$1</em>');
-                markdown = markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-                markdown = markdown.replace(/^\s*\*\s*(.+)$/gm, '<ul><li>$1</li></ul>');
-                markdown = markdown.replace(/^\s*\d+\.\s*(.+)$/gm, '<ol><li>$1</li></ol>');
-                markdown = markdown.replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
-                markdown = markdown.replace(/\n/g, '<br />');
-                markdown = markdown.replace(/%%CODEBLOCK(\d+)%%/g, (match, index) => {
-                    return `<pre><code>${codeBlocks[index]}</code></pre>`;
-                });
-                markdown = markdown.replace(/%%INLINECODE(\d+)%%/g, (match, index) => {
-                    return `<code>${inlineCodeBlocks[index]}</code>`;
-                });
-                return markdown;
-            }
-
-            // Инициализация WebSocket
-            function initWebSocket() {
-                try {
-                    var wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-                    var wsUrl = `${wsProtocol}//${window.location.host}/ai/chat/ws/${client_id}`;
-                    
-                    console.log('Connecting to WebSocket:', wsUrl);
-                    ws = new WebSocket(wsUrl);
-
-                    ws.onopen = function(event) {
-                        console.log('WebSocket connection established');
-                    };
-
-                    ws.onmessage = function (event) {
-                        var messages = document.getElementById('messages');
-                        var message = document.createElement('li');
-                        var inThinkTag = document.createElement('div');
-                        inThinkTag.classList.add('think');
-                        inThinkTag.innerHTML = parseThinkTag(event.data).thinkContent;
-                        var mainMess = document.createElement('div');
-                        mainMess.innerHTML = parseThinkTag(event.data).remainingText;
-                        const mainMessText = mainMess.innerText || "";
-                        const parsedHTML = convertMarkdownToHTML(mainMessText);
-                        const messageContent = document.createElement('div');
-                        messageContent.innerHTML = parsedHTML;
-                        
-                        // --- Accordion logic start ---
-                        const allMessages = messages.querySelectorAll(':scope > li');
-                        const roles = [];
-                        for (let i = 0; i < allMessages.length; i++) {
-                            if (i % 2 === 0) roles.push('user');
-                            else roles.push('assistant');
-                        }
-                        
-                        allMessages.forEach(function (li, idx) {
-                            if (!li.classList.contains('accordion-li') && !li.querySelector('.accordion')) {
-                                li.classList.add('accordion-li');
-                                const role = roles[idx] || 'other';
-                                li.classList.remove('msg-user', 'msg-assistant');
-                                if (role === 'user') li.classList.add('msg-user');
-                                if (role === 'assistant') li.classList.add('msg-assistant');
-                                
-                                const btn = document.createElement('button');
-                                btn.className = 'accordion';
-                                if (role === 'user') btn.classList.add('accordion-user');
-                                if (role === 'assistant') btn.classList.add('accordion-assistant');
-                                
-                                const selectLang = document.getElementById('selectLang');
-                                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
-                                const roleLabels = {
-                                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
-                                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
-                                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
-                                };
-                                
-                                function getRoleLabel(role, lang) {
-                                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
-                                }
-                                
-                                btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
-                                const panel = document.createElement('div');
-                                panel.className = 'panel';
-                                
-                                while (li.firstChild) {
-                                    panel.appendChild(li.firstChild);
-                                }
-                                li.appendChild(btn);
-                                li.appendChild(panel);
-                                
-                                btn.addEventListener('click', function () {
-                                    panel.classList.toggle('open');
-                                    btn.classList.toggle('active');
-                                    btn.textContent = panel.classList.contains('open')
-                                        ? `Скрыть: ${getRoleLabel(role, langAttr)}`
-                                        : `Показать: ${getRoleLabel(role, langAttr)}`;
-                                });
-                            }
-                        });
-                        
-                        if (parseThinkTag(event.data).thinkContent) {
-                            message.appendChild(inThinkTag);
-                        }
-                        message.appendChild(messageContent);
-                        messages.appendChild(message);
-                        messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
-                        var input = document.getElementById("messageText");
-                        input.value = '';
-                        notEnter = false;
-                        
-                        initAccordionForMessages();
-                        collapseAllExceptLast();
-                    };
-
-                    ws.onerror = function(error) {
-                        console.error('WebSocket error:', error);
-                    };
-
-                    ws.onclose = function(event) {
-                        console.log('WebSocket connection closed');
-                    };
-
-                } catch (error) {
-                    console.error('Error initializing WebSocket:', error);
-                }
-            }
-
-            function sendMessage(event) {
-                event.preventDefault();
-                if (!ws) {
-                    console.log("WebSocket is not initialized");
-                    alert("Соединение не установлено. Пожалуйста, подождите...");
-                    return;
-                }
-                
-                if (ws.readyState !== WebSocket.OPEN) {
-                    console.log("WebSocket is not open. State:", ws.readyState);
-                    alert("Соединение не установлено. Пожалуйста, подождите...");
-                    return;
-                }
-                
-                var value = document.querySelector("#select").value;
-                var language = document.querySelector("#selectLang").value;
-                var input = document.getElementById("messageText");
-                
-                if (!input.value.trim()) {
-                    alert("Пожалуйста, введите сообщение");
-                    return;
-                }
-                
-                ws.send(JSON.stringify({
-                    type: '1',
-                    message: input.value,
-                    value: value,
-                    language: language,
-                }));
-                input.value = '';
-            }
-
-            function clearContext() {
-    if (!ws) {
-        console.log("WebSocket is not initialized");
-        return;
-    }
-    
-    if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ action: 'clear_context' }));
-        
-        // Также очищаем локально сообщения
-        var messages = document.getElementById('messages');
-        messages.innerHTML = '';
-        
-        // Показываем сообщение об очистке
-        var clearMessage = document.createElement('li');
-        clearMessage.innerHTML = '<div style="color: green;">Контекст очищен</div>';
-        messages.appendChild(clearMessage);
-        messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
-        
-    } else {
-        console.log("WebSocket is not open. State:", ws.readyState);
-        alert("Соединение не установлено");
-    }
-}
-
-            // Убрал дублирующее объявление notEnter - оно уже объявлено выше
-            document.addEventListener("keydown", function (event) {
-                const checkbox = document.querySelector(".inp");
-                if (event.key === "Enter" && checkbox.checked && !event.shiftKey && !notEnter) {
-                    notEnter = true;
-                    sendMessage(event);
-                }
-            });
-
-            const toggleButton = document.querySelector('.toggle-button');
-            const sidebar = document.querySelector('.sidebar');
-
-            toggleButton.addEventListener('click', () => {
-                sidebar.classList.toggle('open');
-            });
-
-            let isResizing = false;
-
-            function startResize(event) {
-                isResizing = true;
-                window.addEventListener('mousemove', resize);
-                window.addEventListener('mouseup', stopResize);
-            }
-
-            function resize(event) {
-                if (isResizing) {
-                    const container = document.querySelector('form');
-                    const newWidth = container.getBoundingClientRect().right - event.clientX;
-                    const minWidth = 400;
-                    if (newWidth > minWidth) {
-                        container.style.width = `${newWidth}px`;
+            recognition.onresult = function (event) {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        transcript += event.results[i][0].transcript;
                     }
                 }
-            }
-
-            function stopResize() {
-                isResizing = false;
-                window.removeEventListener('mousemove', resize);
-                window.removeEventListener('mouseup', stopResize);
-            }
-
-            const localization = {
-                Russian: {
-                    send: "Отправить",
-                    clear: "Очистить контекст",
-                    placeholder: "Задайте вопрос (желательно на английском во избежание ошибок), для красивого форматирования оберните код в ```(буква Ё на клавиатуре)\nПример форматирования кода:\n```\nprint('Hello, world!')\n```",
-                    adminPanel: "Админ-Панель",
-                    chat: "Чат с DLAI",
-                    decideTask: "Реши задачу",
-                    findError: "В чём ошибка?",
-                    enterHint: "При нажатии на Enter будет отправляться вопрос (для переноса строки Enter+Shift)"
-                },
-                English: {
-                    send: "Send",
-                    clear: "Clear Context",
-                    placeholder: "Ask a question (preferably in English to avoid errors), for nice formatting wrap the code in ```\nExample of code formatting:\n```\nprint('Hello, world!')\n```",
-                    adminPanel: "Admin Panel",
-                    chat: "Chat with DLAI",
-                    decideTask: "Solve the task",
-                    findError: "What's the error?",
-                    enterHint: "Press Enter to send the question (Shift+Enter for a new line)"
-                },
-                French: {
-                    send: "Envoyer",
-                    clear: "Effacer le contexte",
-                    placeholder: "Posez une question (de préférence en anglais pour éviter les erreurs), pour un bon formatage, encadrez le code dans ```\nExemple de formatage du code:\n```\nprint('Hello, world!')\n```",
-                    adminPanel: "Panneau Admin",
-                    chat: "Chat avec DLAI",
-                    decideTask: "Résoudre la tâche",
-                    findError: "Quelle est l'erreur?",
-                    enterHint: "Appuyez sur Entrée pour envoyer la question (Shift+Enter pour une nouvelle ligne)"
+                if (transcript) {
+                    const input = document.getElementById('messageText');
+                    input.value += (input.value ? ' ' : '') + transcript;
+                    updateVoiceStatus('Распознано: ' + transcript);
                 }
             };
 
-            document.getElementById("selectLang").addEventListener("change", function () {
-                const selectedLang = this.options[this.selectedIndex].getAttribute("language");
-                document.querySelector("button[type='submit']").textContent = localization[selectedLang].send;
-                document.querySelector("button[type='button']").textContent = localization[selectedLang].clear;
-                document.getElementById("messageText").setAttribute("placeholder", localization[selectedLang].placeholder);
-                document.querySelector(".sidebar-header").textContent = localization[selectedLang].adminPanel;
-                document.querySelector("#selectType option:nth-child(1)").textContent = localization[selectedLang].chat;
-                document.querySelector("#selectType option:nth-child(2)").textContent = localization[selectedLang].decideTask;
-                document.querySelector("#selectType option:nth-child(3)").textContent = localization[selectedLang].findError;
-                document.querySelector(".check-text").textContent = localization[selectedLang].enterHint;
-                updateAccordionLabels();
-            });
+            recognition.onerror = function (event) {
+                updateVoiceStatus('Ошибка распознавания: ' + event.error);
+            };
 
-            function initAccordionForMessages() {
-                const messages = document.getElementById('messages');
-                const allMessages = messages.querySelectorAll(':scope > li');
-                const roles = [];
-                for (let i = 0; i < allMessages.length; i++) {
-                    if (i % 2 === 0) roles.push('user');
-                    else roles.push('assistant');
-                }
-                
-                const selectLang = document.getElementById('selectLang');
-                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
-                const roleLabels = {
-                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
-                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
-                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
-                };
-                
-                function getRoleLabel(role, lang) {
-                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
-                }
-                
-                allMessages.forEach(function (li, idx) {
-                    if (!li.classList.contains('accordion-li')) {
-                        li.classList.add('accordion-li');
-                        const role = roles[idx] || 'other';
-                        li.classList.remove('msg-user', 'msg-assistant');
-                        
-                        const btn = document.createElement('button');
-                        if (role === 'user') li.classList.add('msg-user');
-                        if (role === 'assistant') li.classList.add('msg-assistant');
-                        btn.className = 'accordion';
-                        if (role === 'user') btn.classList.add('accordion-user');
-                        if (role === 'assistant') btn.classList.add('accordion-assistant');
-                        btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
-                        
-                        const panel = document.createElement('div');
-                        panel.className = 'panel';
-                        
-                        while (li.firstChild) {
-                            panel.appendChild(li.firstChild);
-                        }
-                        li.appendChild(btn);
-                        li.appendChild(panel);
-                        
-                        btn.addEventListener('click', function () {
-                            panel.classList.toggle('open');
-                            btn.classList.toggle('active');
-                            btn.textContent = panel.classList.contains('open')
-                                ? `Скрыть: ${getRoleLabel(role, langAttr)}`
-                                : `Показать: ${getRoleLabel(role, langAttr)}`;
-                        });
-                    }
-                });
-                
-                if (allMessages.length > 0) {
-                    const lastLi = allMessages[allMessages.length - 1];
-                    const lastBtn = lastLi.querySelector('.accordion');
-                    const lastPanel = lastLi.querySelector('.panel');
-                    if (lastBtn && lastPanel) {
-                        lastPanel.classList.add('open');
-                        lastBtn.classList.add('active');
-                        const lastRole = roles[allMessages.length - 1] || 'other';
-                        lastBtn.textContent = `Скрыть: ${getRoleLabel(lastRole, langAttr)}`;
-                    }
-                }
-                
-                window._accordionRoles = roles;
+            recognition.onend = function () {
+                isListening = false;
+                updateVoiceUI();
+            };
+        }
+
+        function toggleVoiceInput() {
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function toggleVoiceControls() {
+            const voiceControls = document.getElementById('voiceControls');
+            voiceControls.classList.toggle('active');
+        }
+
+        function speakLastResponse() {
+            const messages = document.getElementById('messages');
+            const allMessages = messages.querySelectorAll('li');
+            if (allMessages.length === 0) {
+                updateVoiceStatus('Нет сообщений для озвучивания');
+                return;
             }
 
-            function updateAccordionLabels() {
-                const selectLang = document.getElementById('selectLang');
-                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
-                const roleLabels = {
-                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
-                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
-                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+            const lastMessage = allMessages[allMessages.length - 1];
+            const content = lastMessage.innerText;
+            
+            if (!content) {
+                updateVoiceStatus('Сообщение пусто');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(content);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 1.0;
+
+            speechSynthesis.speak(utterance);
+            document.getElementById('voiceOutputBtn').classList.add('speaking');
+            updateVoiceStatus('Озвучивание...');
+
+            utterance.onend = function () {
+                document.getElementById('voiceOutputBtn').classList.remove('speaking');
+                updateVoiceStatus('Озвучивание завершено');
+            };
+        }
+
+        function stopSpeech() {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                updateVoiceStatus('Озвучивание остановлено');
+            }
+            if (isListening && recognition) {
+                recognition.stop();
+            }
+            document.getElementById('voiceOutputBtn').classList.remove('speaking');
+        }
+
+        function updateVoiceUI() {
+            const voiceBtn = document.getElementById('voiceInputBtn');
+            const voiceIndicator = document.getElementById('voiceIndicator');
+            
+            if (isListening) {
+                voiceBtn.classList.add('recording');
+                voiceIndicator.classList.add('active');
+            } else {
+                voiceBtn.classList.remove('recording');
+                voiceIndicator.classList.remove('active');
+            }
+        }
+
+        function updateVoiceStatus(message) {
+            document.getElementById('voiceStatus').textContent = message;
+        }
+
+        // Заглушка для отсутствующей функции
+        function fetchCanUseAi(dlsid) {
+            console.log('fetchCanUseAi called with dlsid:', dlsid);
+            return Promise.resolve(null);
+        }
+
+        function parseThinkTag(inputText) {
+            const thinkStartTag = '<think>';
+            const thinkEndTag = '</think>';
+            const startIdx = inputText.indexOf(thinkStartTag);
+            const endIdx = inputText.indexOf(thinkEndTag);
+            if (startIdx === -1 || endIdx === -1) {
+                return {
+                    thinkContent: '',
+                    remainingText: inputText
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .trim()
                 };
+            }
+            const thinkContent = inputText.substring(
+                startIdx + thinkStartTag.length,
+                endIdx
+            );
+            let remainingText =
+                inputText.substring(0, startIdx) +
+                inputText.substring(endIdx + thinkEndTag.length);
+            remainingText = remainingText
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .trim();
+
+            return {
+                thinkContent: thinkContent.trim(),
+                remainingText: remainingText
+            };
+        }
+
+        function convertMarkdownToHTML(markdown) {
+            markdown = markdown.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            let codeBlocks = [];
+            markdown = markdown.replace(/```([^\`]*)```/g, (match, code) => {
+                const codeId = `%%CODEBLOCK${codeBlocks.length}%%`;
+                codeBlocks.push(code);
+                return codeId;
+            });
+            let inlineCodeBlocks = [];
+            markdown = markdown.replace(/`([^`]+)`/g, (match, code) => {
+                const codeId = `%%INLINECODE${inlineCodeBlocks.length}%%`;
+                inlineCodeBlocks.push(code);
+                return codeId;
+            });
+            markdown = markdown.replace(/^(#{1,6})\s*(.+)$/gm, (match, hashes, content) => {
+                const level = hashes.length;
+                return `<h${level}>${content}</h${level}>`;
+            });
+            markdown = markdown.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+            markdown = markdown.replace(/\_\_([^\_]+)\_\_/g, '<strong>$1</strong>');
+            markdown = markdown.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+            markdown = markdown.replace(/\_([^\_]+)\_/g, '<em>$1</em>');
+            markdown = markdown.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+            markdown = markdown.replace(/^\s*\*\s*(.+)$/gm, '<ul><li>$1</li></ul>');
+            markdown = markdown.replace(/^\s*\d+\.\s*(.+)$/gm, '<ol><li>$1</li></ol>');
+            markdown = markdown.replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
+            markdown = markdown.replace(/\n/g, '<br />');
+            markdown = markdown.replace(/%%CODEBLOCK(\d+)%%/g, (match, index) => {
+                return `<pre><code>${codeBlocks[index]}</code></pre>`;
+            });
+            markdown = markdown.replace(/%%INLINECODE(\d+)%%/g, (match, index) => {
+                return `<code>${inlineCodeBlocks[index]}</code>`;
+            });
+            return markdown;
+        }
+
+        // Инициализация WebSocket
+        function initWebSocket() {
+            try {
+                var wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                var wsUrl = `${wsProtocol}//${window.location.host}/ai/chat/ws/${client_id}`;
                 
-                function getRoleLabel(role, lang) {
-                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                console.log('Connecting to WebSocket:', wsUrl);
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = function(event) {
+                    console.log('WebSocket connection established');
+                    updateVoiceStatus('');
+                };
+
+                ws.onmessage = function (event) {
+                    var messages = document.getElementById('messages');
+                    var message = document.createElement('li');
+                    var inThinkTag = document.createElement('div');
+                    inThinkTag.classList.add('think');
+                    inThinkTag.innerHTML = parseThinkTag(event.data).thinkContent;
+                    var mainMess = document.createElement('div');
+                    mainMess.innerHTML = parseThinkTag(event.data).remainingText;
+                    const mainMessText = mainMess.innerText || "";
+                    const parsedHTML = convertMarkdownToHTML(mainMessText);
+                    const messageContent = document.createElement('div');
+                    messageContent.innerHTML = parsedHTML;
+                    
+                    // --- Accordion logic start ---
+                    const allMessages = messages.querySelectorAll(':scope > li');
+                    const roles = [];
+                    for (let i = 0; i < allMessages.length; i++) {
+                        if (i % 2 === 0) roles.push('user');
+                        else roles.push('assistant');
+                    }
+                    
+                    allMessages.forEach(function (li, idx) {
+                        if (!li.classList.contains('accordion-li') && !li.querySelector('.accordion')) {
+                            li.classList.add('accordion-li');
+                            const role = roles[idx] || 'other';
+                            li.classList.remove('msg-user', 'msg-assistant');
+                            if (role === 'user') li.classList.add('msg-user');
+                            if (role === 'assistant') li.classList.add('msg-assistant');
+                            
+                            const btn = document.createElement('button');
+                            btn.className = 'accordion';
+                            if (role === 'user') btn.classList.add('accordion-user');
+                            if (role === 'assistant') btn.classList.add('accordion-assistant');
+                            
+                            const selectLang = document.getElementById('selectLang');
+                            const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+                            const roleLabels = {
+                                Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                                English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                                French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+                            };
+                            
+                            function getRoleLabel(role, lang) {
+                                return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                            }
+                            
+                            btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                            const panel = document.createElement('div');
+                            panel.className = 'panel';
+                            
+                            while (li.firstChild) {
+                                panel.appendChild(li.firstChild);
+                            }
+                            li.appendChild(btn);
+                            li.appendChild(panel);
+                            
+                            btn.addEventListener('click', function () {
+                                panel.classList.toggle('open');
+                                btn.classList.toggle('active');
+                                btn.textContent = panel.classList.contains('open')
+                                    ? `Скрыть: ${getRoleLabel(role, langAttr)}`
+                                    : `Показать: ${getRoleLabel(role, langAttr)}`;
+                            });
+                        }
+                    });
+                    
+                    if (parseThinkTag(event.data).thinkContent) {
+                        message.appendChild(inThinkTag);
+                    }
+                    message.appendChild(messageContent);
+                    messages.appendChild(message);
+                    messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+                    var input = document.getElementById("messageText");
+                    input.value = '';
+                    notEnter = false;
+                    
+                    initAccordionForMessages();
+                    collapseAllExceptLast();
+                };
+
+                ws.onerror = function(error) {
+                    console.error('WebSocket error:', error);
+                    updateVoiceStatus('Ошибка соединения');
+                };
+
+                ws.onclose = function(event) {
+                    console.log('WebSocket connection closed');
+                    updateVoiceStatus('');
+                };
+
+            } catch (error) {
+                console.error('Error initializing WebSocket:', error);
+            }
+        }
+
+        function sendMessage(event) {
+            event.preventDefault();
+            if (!ws) {
+                console.log("WebSocket is not initialized");
+                alert("Соединение не установлено. Пожалуйста, подождите...");
+                return;
+            }
+            
+            if (ws.readyState !== WebSocket.OPEN) {
+                console.log("WebSocket is not open. State:", ws.readyState);
+                alert("Соединение не установлено. Пожалуйста, подождите...");
+                return;
+            }
+            
+            var value = document.querySelector("#select").value;
+            var language = document.querySelector("#selectLang").value;
+            var input = document.getElementById("messageText");
+            
+            if (!input.value.trim()) {
+                alert("Пожалуйста, введите сообщение");
+                return;
+            }
+            
+            ws.send(JSON.stringify({
+                type: '1',
+                message: input.value,
+                value: value,
+                language: language,
+            }));
+            input.value = '';
+        }
+
+        function clearContext() {
+            if (!ws) {
+                console.log("WebSocket is not initialized");
+                return;
+            }
+            
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ action: 'clear_context' }));
+                
+                var messages = document.getElementById('messages');
+                messages.innerHTML = '';
+                
+                var clearMessage = document.createElement('li');
+                clearMessage.innerHTML = '<div style="color: green;">Контекст очищен</div>';
+                messages.appendChild(clearMessage);
+                messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+                
+            } else {
+                console.log("WebSocket is not open. State:", ws.readyState);
+                alert("Соединение не установлено");
+            }
+        }
+
+        document.addEventListener("keydown", function (event) {
+            const checkbox = document.querySelector(".inp");
+            if (event.key === "Enter" && checkbox.checked && !event.shiftKey && !notEnter) {
+                notEnter = true;
+                sendMessage(event);
+            }
+        });
+
+        const toggleButton = document.querySelector('.toggle-button');
+        const sidebar = document.querySelector('.sidebar');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        let isResizing = false;
+
+        function startResize(event) {
+            isResizing = true;
+            window.addEventListener('mousemove', resize);
+            window.addEventListener('mouseup', stopResize);
+        }
+
+        function resize(event) {
+            if (isResizing) {
+                const container = document.querySelector('form');
+                const newWidth = container.getBoundingClientRect().right - event.clientX;
+                const minWidth = 400;
+                if (newWidth > minWidth) {
+                    container.style.width = `${newWidth}px`;
                 }
-                
-                const allMessages = document.getElementById('messages').querySelectorAll('li');
-                const roles = window._accordionRoles || [];
-                allMessages.forEach(function (li, idx) {
-                    const btn = li.querySelector('.accordion');
-                    const panel = li.querySelector('.panel');
-                    if (btn && panel) {
-                        const role = roles[idx] || 'other';
+            }
+        }
+
+        function stopResize() {
+            isResizing = false;
+            window.removeEventListener('mousemove', resize);
+            window.removeEventListener('mouseup', stopResize);
+        }
+
+        const localization = {
+            Russian: {
+                send: "Отправить",
+                clear: "Очистить контекст",
+                placeholder: "Задайте вопрос (желательно на английском во избежание ошибок), для красивого форматирования оберните код в ```(буква Ё на клавиатуре)\nПример форматирования кода:\n```\nprint('Hello, world!')\n```",
+                adminPanel: "Админ-Панель",
+                chat: "Чат с DLAI",
+                decideTask: "Реши задачу",
+                findError: "В чём ошибка?",
+                enterHint: "При нажатии на Enter будет отправляться вопрос (для переноса строки Enter+Shift)"
+            },
+            English: {
+                send: "Send",
+                clear: "Clear Context",
+                placeholder: "Ask a question (preferably in English to avoid errors), for nice formatting wrap the code in ```\nExample of code formatting:\n```\nprint('Hello, world!')\n```",
+                adminPanel: "Admin Panel",
+                chat: "Chat with DLAI",
+                decideTask: "Solve the task",
+                findError: "What's the error?",
+                enterHint: "Press Enter to send the question (Shift+Enter for a new line)"
+            },
+            French: {
+                send: "Envoyer",
+                clear: "Effacer le contexte",
+                placeholder: "Posez une question (de préférence en anglais pour éviter les erreurs), pour un bon formatage, encadrez le code dans ```\nExemple de formatage du code:\n```\nprint('Hello, world!')\n```",
+                adminPanel: "Panneau Admin",
+                chat: "Chat avec DLAI",
+                decideTask: "Résoudre la tâche",
+                findError: "Quelle est l'erreur?",
+                enterHint: "Appuyez sur Entrée pour envoyer la question (Shift+Enter pour une nouvelle ligne)"
+            }
+        };
+
+        document.getElementById("selectLang").addEventListener("change", function () {
+            const selectedLang = this.options[this.selectedIndex].getAttribute("language");
+            document.querySelector("button[type='submit']").textContent = localization[selectedLang].send;
+            document.querySelector("button[type='button']").textContent = localization[selectedLang].clear;
+            document.getElementById("messageText").setAttribute("placeholder", localization[selectedLang].placeholder);
+            document.querySelector(".sidebar-header").textContent = localization[selectedLang].adminPanel;
+            document.querySelector("#selectType option:nth-child(1)").textContent = localization[selectedLang].chat;
+            document.querySelector("#selectType option:nth-child(2)").textContent = localization[selectedLang].decideTask;
+            document.querySelector("#selectType option:nth-child(3)").textContent = localization[selectedLang].findError;
+            document.querySelector(".check-text").textContent = localization[selectedLang].enterHint;
+            updateAccordionLabels();
+        });
+
+        function initAccordionForMessages() {
+            const messages = document.getElementById('messages');
+            const allMessages = messages.querySelectorAll(':scope > li');
+            const roles = [];
+            for (let i = 0; i < allMessages.length; i++) {
+                if (i % 2 === 0) roles.push('user');
+                else roles.push('assistant');
+            }
+            
+            const selectLang = document.getElementById('selectLang');
+            const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+            const roleLabels = {
+                Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+            };
+            
+            function getRoleLabel(role, lang) {
+                return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+            }
+            
+            allMessages.forEach(function (li, idx) {
+                if (!li.classList.contains('accordion-li')) {
+                    li.classList.add('accordion-li');
+                    const role = roles[idx] || 'other';
+                    li.classList.remove('msg-user', 'msg-assistant');
+                    
+                    const btn = document.createElement('button');
+                    if (role === 'user') li.classList.add('msg-user');
+                    if (role === 'assistant') li.classList.add('msg-assistant');
+                    btn.className = 'accordion';
+                    if (role === 'user') btn.classList.add('accordion-user');
+                    if (role === 'assistant') btn.classList.add('accordion-assistant');
+                    btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                    
+                    const panel = document.createElement('div');
+                    panel.className = 'panel';
+                    
+                    while (li.firstChild) {
+                        panel.appendChild(li.firstChild);
+                    }
+                    li.appendChild(btn);
+                    li.appendChild(panel);
+                    
+                    btn.addEventListener('click', function () {
+                        panel.classList.toggle('open');
+                        btn.classList.toggle('active');
                         btn.textContent = panel.classList.contains('open')
                             ? `Скрыть: ${getRoleLabel(role, langAttr)}`
                             : `Показать: ${getRoleLabel(role, langAttr)}`;
-                    }
-                });
-            }
-
-            function collapseAllExceptLast() {
-                const allMessages = document.getElementById('messages').querySelectorAll('li');
-                const selectLang = document.getElementById('selectLang');
-                const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
-                const roleLabels = {
-                    Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
-                    English: { user: 'You', assistant: 'Assistant', other: 'Others' },
-                    French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
-                };
-                
-                const roles = window._accordionRoles || [];
-                function getRoleLabel(role, lang) {
-                    return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+                    });
                 }
-                
-                allMessages.forEach((li, idx) => {
-                    const btn = li.querySelector('.accordion');
-                    const panel = li.querySelector('.panel');
-                    const role = roles[idx] || 'other';
-                    if (btn && panel) {
-                        if (idx === allMessages.length - 1) {
-                            panel.classList.add('open');
-                            btn.classList.add('active');
-                            btn.textContent = `Скрыть: ${getRoleLabel(role, langAttr)}`;
-                        } else {
-                            panel.classList.remove('open');
-                            btn.classList.remove('active');
-                            btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
-                        }
-                    }
-                });
+            });
+            
+            if (allMessages.length > 0) {
+                const lastLi = allMessages[allMessages.length - 1];
+                const lastBtn = lastLi.querySelector('.accordion');
+                const lastPanel = lastLi.querySelector('.panel');
+                if (lastBtn && lastPanel) {
+                    lastPanel.classList.add('open');
+                    lastBtn.classList.add('active');
+                    const lastRole = roles[allMessages.length - 1] || 'other';
+                    lastBtn.textContent = `Скрыть: ${getRoleLabel(lastRole, langAttr)}`;
+                }
             }
+            
+            window._accordionRoles = roles;
+        }
 
-            window.onload = function () {
-                console.log('Initializing WebSocket with client_id:', client_id);
-                initWebSocket();
-                document.getElementById("selectLang").dispatchEvent(new Event("change"));
-                initAccordionForMessages();
+        function updateAccordionLabels() {
+            const selectLang = document.getElementById('selectLang');
+            const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+            const roleLabels = {
+                Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
             };
-        </script>
-    </div>
+            
+            function getRoleLabel(role, lang) {
+                return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+            }
+            
+            const allMessages = document.getElementById('messages').querySelectorAll('li');
+            const roles = window._accordionRoles || [];
+            allMessages.forEach(function (li, idx) {
+                const btn = li.querySelector('.accordion');
+                const panel = li.querySelector('.panel');
+                if (btn && panel) {
+                    const role = roles[idx] || 'other';
+                    btn.textContent = panel.classList.contains('open')
+                        ? `Скрыть: ${getRoleLabel(role, langAttr)}`
+                        : `Показать: ${getRoleLabel(role, langAttr)}`;
+                }
+            });
+        }
+
+        function collapseAllExceptLast() {
+            const allMessages = document.getElementById('messages').querySelectorAll('li');
+            const selectLang = document.getElementById('selectLang');
+            const langAttr = selectLang.options[selectLang.selectedIndex].getAttribute('language');
+            const roleLabels = {
+                Russian: { user: 'Вы', assistant: 'Ассистент', other: 'Други' },
+                English: { user: 'You', assistant: 'Assistant', other: 'Others' },
+                French: { user: 'Vous', assistant: 'Assistant', other: 'Autres' }
+            };
+            
+            const roles = window._accordionRoles || [];
+            function getRoleLabel(role, lang) {
+                return (roleLabels[lang] && roleLabels[lang][role]) ? roleLabels[lang][role] : role;
+            }
+            
+            allMessages.forEach((li, idx) => {
+                const btn = li.querySelector('.accordion');
+                const panel = li.querySelector('.panel');
+                const role = roles[idx] || 'other';
+                if (btn && panel) {
+                    if (idx === allMessages.length - 1) {
+                        panel.classList.add('open');
+                        btn.classList.add('active');
+                        btn.textContent = `Скрыть: ${getRoleLabel(role, langAttr)}`;
+                    } else {
+                        panel.classList.remove('open');
+                        btn.classList.remove('active');
+                        btn.textContent = `Показать: ${getRoleLabel(role, langAttr)}`;
+                    }
+                }
+            });
+        }
+
+        window.onload = function () {
+            console.log('Initializing WebSocket with client_id:', client_id);
+            initWebSocket();
+            initSpeechRecognition();
+            document.getElementById("selectLang").dispatchEvent(new Event("change"));
+            initAccordionForMessages();
+            updateVoiceStatus('Готов к работе. Нажмите "Голосовой режим" для активации голосовых функций.');
+            
+            const speakThinkCheckbox = document.getElementById('speakThinkContent');
+            speakThinkCheckbox.addEventListener('change', function() {
+                speakThinkEnabled = this.checked;
+            });
+        };
+    </script>
+</div>
 </body>
 </html>
