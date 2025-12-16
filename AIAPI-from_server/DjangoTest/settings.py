@@ -92,11 +92,11 @@ CSRF_TRUSTED_ORIGINS = ['http://dl.gsu.by', 'https://dl.gsu.by']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'dlaibd'),
-        'USER': os.environ.get('POSTGRES_USER', 'dlaibd'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'dlaibd'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'NAME': 'dl_ai',
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': '10.1.2.201',
+        'PORT': '5432',
     }
 }
 
