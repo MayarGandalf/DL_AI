@@ -3,11 +3,14 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 import django
 import os
+from datetime import datetime, timedelta
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoTest.settings')
 django.setup()
 from .models import ProgrammingLanguage, Prompt
 from .utils import *
 from asgiref.sync import sync_to_async
+
+current_tokens = 0
 
 @sync_to_async
 def getPromptText(prompt_id):
@@ -29,6 +32,7 @@ def getProgLng(language_id):
         print(f"Database error: {str(e)}")
         return None
 
+
 class MyConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.client_id = self.scope['url_route']['kwargs']['client_id']
@@ -39,6 +43,7 @@ class MyConsumer(AsyncWebsocketConsumer):
         print(f"Connection closed for client {self.client_id}")
 
     async def receive(self, text_data):
+
         try:
             data = json.loads(text_data)
             print(f"Received data: {data}")
@@ -83,7 +88,6 @@ class MyConsumer(AsyncWebsocketConsumer):
                 if promptText and (not hasattr(self, 'last_prompt') or self.last_prompt != promptText):
                     message += f". Препромпт: {promptText}"
                     self.last_prompt = promptText
-            
             elif type == "3":
                 progLng = await getProgLng(data.get('progLng'))
                 code = data.get('code', '')
@@ -93,38 +97,77 @@ class MyConsumer(AsyncWebsocketConsumer):
                     message += f". Препромпт: {promptText}"
                     self.last_prompt = promptText
 
-            # Отправляем сообщение пользователю
-            await self.send(text_data=f"<think>Обрабатываю запрос пользователя</think>Вы: {message}")
+            
+            # Время отправки запроса
+            start_time = datetime.now()
+            start_str = (start_time + timedelta(hours=3)).strftime("%H:%M:%S")
 
+            # Отправляем сообщение пользователю
+            await self.send(text_data=f"<think> {start_str} Обрабатываю запрос пользователя</think> Вы: {message}")
             # Обработка модели AI
             response = "Что-то пошло не так. Попробуйте еще раз."
-            
+
             try:
                 # Используем выбранную модель
                 if value == "Meta_Llama_3_1_70B_Instruct":
                     response = await ask_Meta_Llama_3_1_70B_Instruct_async(message, self.client_id)
+                    modell = "Meta_Llama_3_1_70B_Instruct"
                 elif value == "Mixtral_8x7B":
                     # Используем Mixtral 8x22b как замену
                     response = await ask_Mixtral_8x22b_async(message, self.client_id)
+                    modell = "Mixtral_8x7B"
                 elif value == "Mixtral_8x22b":
                     response = await ask_Mixtral_8x22b_async(message, self.client_id)
+                    modell = "Mixtral_8x22b"
                 elif value == "DeepSeek_R1_Distill_Llama_70B":
                     response = await ask_DeepSeek_R1_Distill_Llama_70B_async(message, self.client_id)
+                    modell = "DeepSeek_R1_Distill_Llama_70B"
                 elif value == "Llama_3_1_Tulu_3_405B":
                     response = await ask_Llama_3_1_Tulu_3_405B_async(message, self.client_id)
+                    modell = "Llama_3_1_Tulu_3_405B"
                 elif value == "DeepSeek_R1":
                     response = await ask_DeepSeek_R1_async(message, self.client_id)
+                    modell = "DeepSeek_R1"
                 elif value == "QwQ_32B":
                     response = await ask_QwQ_32B_async(message, self.client_id)
+                    modell = "QwQ_32B"
+                elif value == "Gpt_oss_120b":
+                    response = await ask_Gpt_oss_120b_async(message, self.client_id)
+                    modell = "Gpt_oss_120b"
                 else:
                     response = f"Модель {value} не найдена. Используйте доступные модели."
+                
                         
             except Exception as e:
                 print(f"Error in AI model processing: {str(e)}")
                 response = f"Ошибка при обработке запроса: {str(e)}"
 
+
+            # Время отправки ответа
+            end_time = datetime.now()
+            end_str = (end_time + timedelta(hours=3)).strftime("%H:%M:%S")
+
+            # Время обработки
+            time_diff = end_time - start_time
+            total_seconds = time_diff.total_seconds()
+
+            if total_seconds < 60:
+                duration = f"{total_seconds:.3f} сек"
+            else:
+                minutes = int(total_seconds // 60)
+                seconds = total_seconds % 60
+                duration = f"{minutes} мин {seconds:.3f} сек"
+
             # Отправляем ответ
-            await self.send(text_data=f"<think>Запрос успешно обработан</think>Ассистент: {response}")
+            if isinstance(response, tuple):
+                await self.send(text_data=f'''<think> {end_str} Запрос успешно обработан</think>
+                Модель: {modell}
+                Время обработки запроса: {duration}
+                Потрачено токенов: {response[1]}
+                {response[0]}''')
+            else:
+                await self.send(text_data=f'''<think> {end_hour}:{end_minute}:{end_second} Запрос успешно обработан</think>
+                {response}''')
 
         except json.JSONDecodeError as e:
             await self.send(text_data="Ошибка: Неверный формат JSON")
