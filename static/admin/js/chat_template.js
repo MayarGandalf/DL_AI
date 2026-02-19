@@ -707,3 +707,17 @@ var ws = null;
                     }
                 });
             }
+            window.onload = function () {
+                console.log('Initializing WebSocket with client_id:', client_id);
+                initWebSocket();
+                initSpeechRecognition();
+                document.getElementById("selectLang").dispatchEvent(new Event("change"));
+                initAccordionForMessages();
+                updateVoiceStatus('Готов к работе. Нажмите "Голосовой режим" для активации голосовых функций.');
+                
+                // Инициализация чекбокса think-блоков
+                const speakThinkCheckbox = document.getElementById('speakThinkContent');
+                speakThinkCheckbox.addEventListener('change', function() {
+                    speakThinkEnabled = this.checked;
+                });
+            };
